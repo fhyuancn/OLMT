@@ -262,6 +262,8 @@ parser.add_option("--fates_paramfile", dest="fates_paramfile", default="", \
                   help = 'Fates parameter file to use')
 parser.add_option("--var_soilthickness", dest="var_soilthickness", default=False, \
                   help = 'Use variable soil thickness from surface data', action="store_true")
+parser.add_option("--alquimia", dest="alquimia",default=False, action="store_true", 
+                help="Compile model with alquimia BGC interface")
 parser.add_option("--add_temperature", dest="addt", default=0.0, \
                   help = 'Temperature to add to atmospheric forcing')
 parser.add_option("--add_co2", dest="addco2", default=0.0, \
@@ -1318,6 +1320,9 @@ for i in range(1,int(options.ninst)+1):
     if (options.var_soilthickness):
         output.write(" use_var_soil_thick = .TRUE.\n") 
 
+    if (options.alquimia):
+        output.write(" use_alquimia = .TRUE.\n")
+
     #pft dynamics file for transient run
     if ('20TR' in compset or options.istrans):
         if (options.nopftdyn):
@@ -1519,6 +1524,12 @@ if (options.humhol):
 if (options.marsh):
     print("Turning on MARSH modification\n")
     os.system("./xmlchange -id CLM_CONFIG_OPTS --append --val '-cppdefs -DMARSH'")
+if (options.alquimia):
+    print("Turning on alquimia interface for compilation and running")
+    os.system("./xmlchange -id CLM_CONFIG_OPTS --append --val '-cppdefs -DUSE_ALQUIMIA_LIB'")
+    result = os.system("./xmlchange CLM_USE_ALQUIMIA=TRUE")
+    if result != 0:
+        raise RuntimeError('Command failed: "./xmlchange CLM_USE_ALQUIMIA=TRUE"')
 if (options.harvmod):
     print('Turning on HARVMOD modification\n')
     os.system("./xmlchange -id CLM_CONFIG_OPTS --append --val '-cppdefs -DHARVMOD'")

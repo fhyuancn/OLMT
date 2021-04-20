@@ -192,6 +192,7 @@ parser.add_option("--dailyvars", dest="dailyvars", default=False, \
                  action="store_true", help="Write daily ouptut variables")
 parser.add_option("--var_soilthickness",dest="var_soilthickness", default=False, \
                   help = 'Use variable soil depth from surface data file',action='store_true')
+parser.add_option("--alquimia", dest="alquimia",default=False, action="store_true", help="Compile model with alquimia BGC interface")
 
 # model output options
 parser.add_option("--hist_vars", dest="hist_vars", default='', \
@@ -624,6 +625,9 @@ for row in AFdatareader:
           basecmd = basecmd+' --project '+myproject
         if (options.domainfile != ''):
           basecmd = basecmd+' --domainfile '+options.domainfile 
+
+        if (options.alquimia):
+            basecmd = basecmd + ' --alquimia'
 
 #---------------- build commands for runCLM.py -----------------------------
 
