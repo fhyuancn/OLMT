@@ -55,7 +55,7 @@ if (os.path.isfile(options.ens_file)):
         myinput.close()
 else:
     if (not options.postproc_only):
-      if (options.mc_ensemble > 0):
+      if (int(options.mc_ensemble) > 0):
         options.n = int(options.mc_ensemble)
         caseid = options.casename.split('_')[0]
         if (options.ens_file == ''):
