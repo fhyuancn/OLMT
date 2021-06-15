@@ -249,8 +249,8 @@ if (os.path.isfile(options.postproc_file)):
             days_total = (int(s.split()[2]) - int(s.split()[1])+1)*(int(s.split()[4]) - int(s.split()[3])+1)        
             data_cols = data_cols + days_total / int(s.split()[5])
     if (rank == 0):
-        data = np.zeros([data_cols,options.n], np.float)-999
-    data_row = np.zeros([data_cols], np.float)-999
+        data = np.zeros([int(data_cols),options.n], np.float)-999
+    data_row = np.zeros([int(data_cols)], np.int)-999
     postproc_input.close()
 
 #get the parameter names
