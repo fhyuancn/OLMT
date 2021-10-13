@@ -188,6 +188,9 @@ pnum = 0
 CNP_parms = ['ks_sorption', 'r_desorp', 'r_weather', 'r_adsorp', 'k_s1_biochem', 'smax', 'k_s3_biochem', \
              'r_occlude', 'k_s4_biochem', 'k_s2_biochem']
 
+microbe_parms = ['k_dom','m_dAceProdACmax','m_dACMinQ10','m_dGrowRAceMethanogens','m_dH2ProdAcemax',\
+                 'm_dYAceMethanogens','m_dKCH4OxidCH4','m_dPlantTrans']
+
 fates_seed_zeroed=[False,False]
 for p in parm_names:
    if ('INI' in p):
@@ -205,6 +208,16 @@ for p in parm_names:
      param = nffun.getvar(myfile, 'MONTHLY_LAI')
      param[:,:,:,:] = parm_values[pnum]
      ierr = nffun.putvar(myfile, 'MONTHLY_LAI', param)
+   elif (p in microbe_parms):
+     infile = open(ens_dir+'/microbepar_in','r')
+     outfile = open(ens_dir+'/microbepar_in_temp','w')
+     for s in infile:
+       line = s.split(' ')
+       if (line[0]  == p):
+         outfile.write(line[0]+' '+str(parm_values[pnum])+'\n')
+       else:
+         outfile.write(s)
+     os.system('cp '+ens_dir+'/microbepar_in_temp '+ens_dir+'/microbepar_in')
    elif (p != 'co2'):
       if (p in CNP_parms):
          myfile= CNPfile
